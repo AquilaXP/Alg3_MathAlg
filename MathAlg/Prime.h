@@ -1,8 +1,9 @@
 #pragma once
 
-#include <vector>
 #include <bitset>
-#include <cstdint>
+
+#include "FactorArray.h"
+#include "VectorArray.h"
 
 // A - подсчет число делителей
 bool primeA( size_t n )
@@ -42,32 +43,32 @@ bool primeB( size_t n )
     return true;
 }
 
-std::vector<size_t> gprimes;
+FactorArray<size_t> gprimes;
+// B2 - оптимизация с использованием массива предыдущих простых чисел
 bool primeB2( size_t n )
 {
     if( n % 2 == 0 )
         return false;
 
-    for( auto& p : gprimes )
+    for( size_t i = 0; i < gprimes.size(); ++i )
     {
-        if( n % p == 0 )
+        if( n % gprimes.get(i) == 0 )
             return false;
     }
 
     return true;
 }
 
-
 size_t countPrimeB( size_t n )
 {
     size_t c = 1;
     gprimes.clear();
-    gprimes.push_back( 2 );
+    gprimes.add( 2 );
     for( size_t i = 3; i <= n; ++i )
     {
         if( primeB2( i ) )
         {
-            gprimes.push_back( i );
+            gprimes.add( i );
             ++c;
         }
     }
@@ -75,36 +76,77 @@ size_t countPrimeB( size_t n )
 }
 
 // С - решето Эратосфена
-void updatePrimes( std::vector<bool>& primes, size_t n )
+void updatePrimes( VectorArray<bool>& primes, size_t n )
 {
-    if( primes.size() < n )
-        primes.resize( n + 1 );
-    std::fill( std::begin( primes ), std::end( primes ), true );
-
-    primes[0] = false;
-    primes[1] = false;
+    primes.clear();
+    for( size_t i = 0; i <= n; ++i )
+        primes.add( true );
+    
+    primes.get( 0 ) = false;
+    primes.get( 1 ) = false;
 
     for( size_t i = 2; i <= n; ++i )
     {
-        if( primes[i] == true )
+        if( primes.get(i) == true )
             for( size_t k = i * i; k <= n; k += i )
-                primes[k] = false;
+                primes.get(k) = false;
     }
 }
 
-size_t countPrimeС( size_t n )
+size_t countPrimeC( size_t n )
 {
-    std::vector<bool> primes;
+    VectorArray<bool> primes( n + 1 );
     updatePrimes( primes, n );
     size_t c = 0;
     int i = 0;
-    for( auto& p : primes )
+    for( size_t i = 0; i < primes.size(); ++i )
     {
-        if( p == true )
+        if( primes.get(i) == true )
         {
             ++c;
         }
-        ++i;
+    }
+    return c;
+}
+
+// D - решето Эратосфена
+void updatePrimes( VectorArray< std::bitset<32> >& primes, size_t n )
+{
+    primes.clear();
+    for( size_t i = 0; i <= n; ++i )
+        primes.add( std::bitset<32>( 0xFFFFFFFF ) );
+
+    primes.get( 0 )[0] = false;
+    primes.get( 0 )[1] = false;
+
+    for( size_t i = 2; i <= n; ++i )
+    {
+        size_t index1 = i / 32;
+        size_t index2 = i % 32;
+        if( primes.get( index1 )[index2] == true )
+            for( size_t k = i * i; k <= n; k += i )
+            {
+                size_t kindex1 = k / 32;
+                size_t kindex2 = k % 32;
+                primes.get( kindex1 )[kindex2] = false;
+            }
+    }
+}
+
+size_t countPrimeD( size_t n )
+{
+    VectorArray< std::bitset<32> > primes( n / 32 + ( ( n % 32 > 0 ) ? 1 : 0 ) );
+    updatePrimes( primes, n );
+    size_t c = 0;
+    int i = 0;
+    for( size_t i = 0; i < n; ++i )
+    {
+        size_t index1 = i / 32;
+        size_t index2 = i % 32;
+        if( primes.get( index1 )[index2] == true )
+        {
+            ++c;
+        }
     }
     return c;
 }

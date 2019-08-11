@@ -1,0 +1,3 @@
+[submodule "External/IArray"]
+	path = External/IArray
+	url = git@github.com:AquilaXP/Alg2_iarray.git

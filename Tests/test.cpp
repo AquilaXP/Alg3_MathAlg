@@ -131,7 +131,11 @@ BOOST_AUTO_TEST_CASE( test_testPrimeB )
 }
 BOOST_AUTO_TEST_CASE( test_testPrimeC )
 {
-    testPrime( countPrime— );
+    testPrime( countPrimeC );
+}
+BOOST_AUTO_TEST_CASE( test_testPrimeD )
+{
+    testPrime( countPrimeD );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

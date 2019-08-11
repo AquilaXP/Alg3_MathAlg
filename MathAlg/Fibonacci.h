@@ -37,7 +37,7 @@ size_t fibC( size_t n )
 {
     const double fi = ( 1.0 + std::sqrt( 5.0 ) ) / 2.0;
     
-    return std::floor( std::pow( fi, n ) / std::sqrt( 5.0 ) + 0.5 );
+    return size_t(std::floor( std::pow( fi, n ) / std::sqrt( 5.0 ) + 0.5 ));
 }
 
 /*
