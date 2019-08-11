@@ -24,7 +24,7 @@ void testEuclideanAlg( Func ef )
 
     for( auto& c : cases )
     {
-        BOOST_CHECK_BITWISE_EQUAL( ef( std::get<0>( c ), std::get<1>( c ) ), std::get<2>( c ) );
+        BOOST_CHECK_EQUAL( ef( std::get<0>( c ), std::get<1>( c ) ), std::get<2>( c ) );
     }
 }
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( test_EuclideanAlgBR )
 
 BOOST_AUTO_TEST_CASE( test_EuclideanAlgC )
 {
-    //testEuclideanAlg( gcd_C );
+    testEuclideanAlg( gcd_C );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

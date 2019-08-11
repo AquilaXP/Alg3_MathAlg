@@ -109,9 +109,12 @@ size_t countPrimeC( size_t n )
     return c;
 }
 
-// D - решето Эратосфена
-void updatePrimes( VectorArray< std::bitset<32> >& primes, size_t n )
+// D - решето Эратосфена с битовой матрицей 
+template< size_t I >
+void updatePrimes( VectorArray< std::bitset<I> >& primes, size_t n )
 {
+    static_assert( I % 8 == 0, "" );
+
     primes.clear();
     for( size_t i = 0; i <= n; ++i )
         primes.add( std::bitset<32>( 0xFFFFFFFF ) );
@@ -121,13 +124,13 @@ void updatePrimes( VectorArray< std::bitset<32> >& primes, size_t n )
 
     for( size_t i = 2; i <= n; ++i )
     {
-        size_t index1 = i / 32;
-        size_t index2 = i % 32;
+        size_t index1 = i / I;
+        size_t index2 = i % I;
         if( primes.get( index1 )[index2] == true )
             for( size_t k = i * i; k <= n; k += i )
             {
-                size_t kindex1 = k / 32;
-                size_t kindex2 = k % 32;
+                size_t kindex1 = k / I;
+                size_t kindex2 = k % I;
                 primes.get( kindex1 )[kindex2] = false;
             }
     }

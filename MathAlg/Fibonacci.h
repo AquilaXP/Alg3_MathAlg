@@ -4,6 +4,7 @@
 
 #include "FastPow.h"
 
+// рекурсивно
 size_t fibA( size_t n )
 {
     if( n == 0 )
@@ -14,6 +15,7 @@ size_t fibA( size_t n )
     return fibA( n - 1 ) + fibA( n - 2 );
 }
 
+// итерационно
 size_t fibB( size_t n )
 {
     if( n == 0 )
@@ -33,6 +35,7 @@ size_t fibB( size_t n )
     return Fn;
 }
 
+// по формуле золотого сечения
 size_t fibC( size_t n )
 {
     const double fi = ( 1.0 + std::sqrt( 5.0 ) ) / 2.0;
@@ -46,7 +49,14 @@ size_t fibC( size_t n )
 */
 struct uMat2x2
 {
-    size_t v[2][2];
+    uMat2x2( size_t a = 1 )
+    {
+        v[0][0] = a;
+        v[0][1] = 0;
+        v[1][0] = 0;
+        v[1][1] = a;
+    }
+
     uMat2x2 operator *=( const uMat2x2& rhs )
     {
         size_t new_v[2][2] = { 0,0,0,0 };
@@ -61,8 +71,11 @@ struct uMat2x2
         memcpy( v, new_v, sizeof new_v );
         return *this;
     }
+
+    size_t v[2][2];
 };
 
+// через умножение матриц
 size_t fibD( size_t n )
 {
     if( n == 0 )
@@ -75,28 +88,7 @@ size_t fibD( size_t n )
     m.v[1][0] = 1;
     m.v[1][1] = 0;
 
-    uMat2x2 FastPowMat2x2( uMat2x2 a, size_t n );
-    m = FastPowMat2x2( m, n - 1 );
+    m = FastPowC( m, n - 1 );
 
     return m.v[0][0];
-}
-
-uMat2x2 FastPowMat2x2( uMat2x2 a, size_t n )
-{
-    uMat2x2 m;
-    m.v[0][0] = 1;
-    m.v[0][1] = 0;
-    m.v[1][0] = 0;
-    m.v[1][1] = 1;
-    while( n > 1 )
-    {
-        if( n % 2 == 1 )
-            m *= a;
-        a *= a;
-        n /= 2;
-    }
-    if( n > 0 )
-        m *= a;
-
-    return m;
 }

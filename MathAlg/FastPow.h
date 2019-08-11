@@ -1,5 +1,6 @@
 #pragma once
 
+// Итеративный
 template< class T >
 T FastPowA( T a, size_t n )
 {
@@ -9,6 +10,7 @@ T FastPowA( T a, size_t n )
     return res;
 }
 
+// Через степень двойки с домножением
 template< class T >
 T FastPowB( T a, size_t n )
 {
@@ -16,7 +18,7 @@ T FastPowB( T a, size_t n )
         return 1;
     T res = a;
     size_t j = 1;
-    for( ; j * 2 <= n; j *= 2 )
+    for( ;j * 2 <= n; j *= 2 )
     {
         res *= res;
     }
@@ -26,6 +28,7 @@ T FastPowB( T a, size_t n )
     return res;
 }
 
+// Через воичное разложение показателя степени
 template< class T >
 T FastPowC( T a, size_t n )
 {
@@ -43,10 +46,11 @@ T FastPowC( T a, size_t n )
     return p;
 }
 
+// Чтение битов числа
 template< class T >
 T FastPowC2( T a, size_t n )
 {
-    T p = 1;
+    T p = T(1);
     std::bitset<sizeof( size_t ) * 8> bits( n );
     size_t n1 = 0;
     while( n > 1 )
