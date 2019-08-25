@@ -1,5 +1,7 @@
 #pragma once
 
+#include <bitset>
+
 // Итеративный
 template< class T >
 T FastPowA( T a, size_t n )

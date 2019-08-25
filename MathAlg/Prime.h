@@ -30,6 +30,9 @@ size_t countPrimeA( size_t n )
 // B - оптимизация А
 bool primeB( size_t n )
 {
+    if( n == 2 )
+        return true;
+
     if( n % 2 == 0 )
         return false;
 
@@ -47,6 +50,8 @@ FactorArray<size_t> gprimes;
 // B2 - оптимизация с использованием массива предыдущих простых чисел
 bool primeB2( size_t n )
 {
+    if( n == 2 )
+        return true;
     if( n % 2 == 0 )
         return false;
 
@@ -61,10 +66,9 @@ bool primeB2( size_t n )
 
 size_t countPrimeB( size_t n )
 {
-    size_t c = 1;
+    size_t c = 0;
     gprimes.clear();
-    gprimes.add( 2 );
-    for( size_t i = 3; i <= n; ++i )
+    for( size_t i = 2; i <= n; ++i )
     {
         if( primeB2( i ) )
         {

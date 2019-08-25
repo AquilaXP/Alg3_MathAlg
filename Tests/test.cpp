@@ -156,7 +156,7 @@ void testFibonacci( Func fibonacci )
         1134903170,1836311903,2971215073*/
     };
 
-    for( size_t i = 3; i < fibonaccies.size(); ++i )
+    for( size_t i = 0; i < fibonaccies.size(); ++i )
         BOOST_CHECK_EQUAL( fibonacci( i ), fibonaccies[i] );
 }
 
